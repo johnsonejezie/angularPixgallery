@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html ng-app="flickr">
+<head>
+	<title></title>
+	<link rel="stylesheet" type="text/css" href="css/main.css">
+	<script type="text/javascript" src="js/angular.min.js"></script>
+	<script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
+	<script type="text/javascript" src="js/app.js"></script>
+
+	
+	
+</head>
+<body ng-controller="myController as someCtrl">
+
+
+	<div id="header">
+		pixGallery
+	</div>
+
+	<!-- div for button for recent and interesting photos -->
+
+	<div id="click">
+		<input type="button" value="Recent" id="recent" ng-click="getRecent()" class="active"/>
+
+		<input type="button" value="Interesting photos" id="interesting" ng-click="getInteresting()" class="active"/>
+	</div>
+
+
+
+	<!-- div for the search bar -->
+	<div id="target">
+		<form id="searchbox">
+			<input type="text" placeholder="Type here" id="userName" ng-model="username" />
+			<input type="button" value="Search" id="submit" ng-click="getUser()"/>
+		</form>
+	</div>
+	
+
+
+
+	<!-- div for the ajax loader -->
+	
+	<div id="spinner" ng-show="loading">
+		<img src='img/gif-load.gif' width="64" height="64" />
+	</div>
+
+
+	
+	<!-- div for the photo container -->
+	<div id="container" ng-init= "getRecent()" ng-show="imgCont">
+
+
+		<ul>
+			<li  class="posts" ng-repeat="post in posts">
+				<a href="#" ng-click='gallery()' >
+
+					<!-- span to contain hovertip -->
+					<span>
+	        			<p>Owner: {{post.ownername}} </p>
+						<p>Title: {{post.title}}</p>
+						<p>Date: {{post.datetaken}}</p>
+						<p>Tag: {{post.tags}}</p>
+						<p>Views: {{post.views}}</p>
+					</span>
+        			
+        			<img ng-src="{{post.url_o}}"  class="tooltip"  />
+
+        		</a>
+
+        	</li>
+        </ul>
+	</div>
+
+
+
+
+	<!-- Pagination button -->
+	<div id="nav" ng-show="navi">
+		<button class="nav" ng-click='previousPage()'>Previous<button>
+		<button class="nav" ng-click='nextPage()'>Next<button>
+	</div>
+
+
+
+	<!-- slider container -->
+    <div class="container slider" ng-show="slide" id="slider">
+
+        <!-- enumerate all photos -->
+        <img ng-repeat="image in img" class="slide" ng-swipe-right="showPrev()" ng-swipe-left="showNext()" ng-show="isActive($index)" ng-src="{{image.url_o}}" />
+
+        <!-- prev / next controls -->
+        <a class="closebtn" href="#" ng-click="closeslide()">CLOSE</a>
+        <a class="arrow prev" href="#" ng-click="showPrev()"></a>
+        <a class="arrow next" href="#" ng-click="showNext()"></a>
+
+
+
+        <!-- extra navigation controls -->
+        <ul class="navigator">
+            <li ng-repeat="image in img" ng-class="{'active':isActive($index)}">
+                <img src="{{image.url_o}}" ng-click="showPhoto($index);" />
+            </li>
+        </ul>
+
+    </div>
+	
+</body>
+
+</html>
+
+
